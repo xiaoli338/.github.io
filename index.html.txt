@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电池信息查询系统</title>
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui, sans-serif;}
+        body{padding:30px 20px;background:#f5f7fa;color:#333;}
+        .container{max-width:500px;margin:0 auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 2px 10px #00000012;}
+        h1{text-align:center;font-size:22px;margin-bottom:24px;color:#222;}
+        .item-list{margin-bottom:24px;}
+        .item-list p{padding:6px 0;font-size:16px;}
+        .tip{color:#666;font-size:14px;margin-bottom:24px;line-height:1.6;}
+        input{width:100%;padding:14px;font-size:16px;border:1px solid #ddd;border-radius:8px;margin-bottom:16px;outline:none;}
+        button{width:100%;padding:14px;background:#2b78e4;color:#fff;border:none;border-radius:8px;font-size:17px;cursor:pointer;}
+        button:active{background:#2060bc;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>电池信息查询</h1>
+    <div class="item-list">
+        <p>✅ 电池型号</p>
+        <p>✅ 额定电压 / 容量</p>
+        <p>✅ 电池序列号</p>
+        <p>✅ 生产日期</p>
+    </div>
+    <div class="tip">
+        使用说明：<br>
+        1. 在下方输入框填写电池序列号<br>
+        2. 点击【查询】获取电池档案<br>
+        3. 如查询失败，请核对编号是否正确，或联系技术人员
+    </div>
+    <input type="text" id="sn" placeholder="电池序列号">
+    <button onclick="queryBattery()">查询</button>
+    <div id="result" style="margin-top:20px;"></div>
+</div>
+
+<script>
+// 这里是示例数据，你后续可以自行扩充电池档案
+const batteryData = {
+    "BT001":{model:"12V 100Ah",voltage:"12V",capacity:"100Ah",sn:"BT001",mfg:"2026-01-15"},
+    "BT002":{model:"24V 50Ah",voltage:"24V",capacity:"50Ah",sn:"BT002",mfg:"2026-03-22"}
+};
+
+function queryBattery(){
+    const sn = document.getElementById('sn').value.trim();
+    const resDom = document.getElementById('result');
+    if(!sn){
+        resDom.innerHTML="<p style='color:red'>请输入电池序列号</p>";
+        return;
+    }
+    if(batteryData[sn]){
+        const d = batteryData[sn];
+        resDom.innerHTML=`
+        <div style="padding:16px;background:#f0f7ff;border-radius:8px;">
+            <p><strong>电池型号：</strong>${d.model}</p>
+            <p><strong>额定电压：</strong>${d.voltage}</p>
+            <p><strong>容量：</strong>${d.capacity}</p>
+            <p><strong>序列号：</strong>${d.sn}</p>
+            <p><strong>生产日期：</strong>${d.mfg}</p>
+        </div>`;
+    }else{
+        resDom.innerHTML="<p style='color:red'>未查询到该电池信息，请检查序列号</p>";
+    }
+}
+</script>
+</body>
+</html>
